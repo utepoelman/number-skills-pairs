@@ -6,7 +6,7 @@
     <title>Nugget's Number Skills Pairs</title>
     <style>
         :root {
-            /* Theme Colors - Green/Teal for General Maths */
+            /* Theme Colors - Green/Teal for Number Skills */
             --primary-color: #00b894; 
             --secondary-color: #55efc4;
             --bg-color: #f0f3f5;
@@ -716,8 +716,21 @@
     }
 
     function handleCardClick(card) {
-        if (gameState.isProcessing || card.classList.contains('matched') || card.classList.contains('flipped')) return;
+        if (gameState.isProcessing || card.classList.contains('matched')) return;
 
+        // FIX: Handle Open Mode Deselection
+        if (gameState.mode === 'solo-open') {
+            if (card.classList.contains('selected')) {
+                card.classList.remove('selected');
+                selectedCards = [];
+                return;
+            }
+        } else {
+            // In memory mode, ignore already flipped cards
+            if (card.classList.contains('flipped')) return;
+        }
+
+        // Selection Logic
         if (gameState.mode !== 'solo-open') {
             card.classList.add('flipped');
         } else {
